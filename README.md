@@ -1,38 +1,28 @@
-# Pipeline ETL Temps Réel Kafka-Cassandra
+# Projet ETL Kafka avec Intégration Cassandra
+
+Ce projet démontre comment mettre en place un pipeline de données utilisant Apache Kafka pour l'ingestion de données en temps réel, effectuer un traitement ETL sur les données, et stocker les résultats dans Apache Cassandra. Le pipeline se compose d'un **producteur Kafka**, d'un **consommateur Kafka** et d'une **intégration avec Cassandra**.
+
+---
+
+## Table des Matières
+
+- [Prérequis](#prérequis)  
+- [Structure du Projet](#structure-du-projet)  
+- [Configuration et Installation](#configuration-et-installation)  
+- [Exécution du Producteur Kafka](#exécution-du-producteur-kafka)  
+- [Exécution du Consommateur Kafka](#exécution-du-consommateur-kafka)  
+- [Vérification des Données dans Cassandra](#vérification-des-données-dans-cassandra)  
+- [Notes Complémentaires](#notes-complémentaires)  
+- [Exemple de Données](#exemple-de-données)
+
+---
 
 ## Prérequis
-- Docker 20.10+ et Docker Compose 2.0+
-- Python 3.8+ avec pip
 
-## Installation
-1. Clonez le dépôt : `git clone https://github.com/votre-user/kafka-cassandra-etl.git && cd kafka-cassandra-etl`
-2. Installez les dépendances : `pip install confluent-kafka cassandra-driver python-dotenv`
-3. Lancez les services : `docker-compose up -d --build`
+Avant de commencer, assurez-vous d’avoir les éléments suivants installés :
 
-## Fichiers de Configuration et Code
-`docker-compose.yml` :
-```yaml
-version: '3.8'
-services:
-  zookeeper:
-    image: confluentinc/cp-zookeeper:7.0.1
-    ports: ["2181:2181"]
-  kafka:
-    image: confluentinc/cp-kafka:7.0.1
-    depends_on: [zookeeper]
-    ports: ["9092:9092"]
-    environment:
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-  cassandra:
-    image: cassandra:4.0
-    ports: ["9042:9042"]
-  producer:
-    build: ./producer
-    depends_on: [kafka]
-    environment:
-      KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
-      TOPIC_NAME: "input_topic"
-  consumer:
-    build: ./consumer
-    depends_on: [kafka, cassandra]
+- Docker et Docker Compose  
+- Python 3.x  
+- Bibliothèques Python :
+  ```bash
+  pip install confluent-kafka cassandra-driver
